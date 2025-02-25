@@ -1,18 +1,22 @@
 import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  await page.goto('https://parabank.parasoft.com/parabank/index.htm');
+  await page.setViewportSize({ width: 1920, height: 1080 });
 
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+  await expect(page).toHaveTitle(/ParaBank/);
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('navigate to ParaBank', async ({ page, browser }) => {
+  await page.goto('https://parabank.parasoft.com/parabank/index.htm');
+  await page.setViewportSize({ width: 1920, height: 1080 });
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // Wait for the page to load
+  await page.waitForLoadState('domcontentloaded');
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // Expect the main content to be visible
+  await expect(page.locator('#mainPanel')).toBeVisible();
+  
+  await browser.close();
 });
